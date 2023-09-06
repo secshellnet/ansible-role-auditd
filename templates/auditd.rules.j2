@@ -1,0 +1,52 @@
+# Ansible managed: Do NOT modify this section manually
+
+# This file contains the audit rules for auditd
+
+# Remove existing rules
+-D
+
+# Set auditd to write logs to /var/log/audit/audit.log
+-w /var/log/audit/audit.log -k audit_log
+
+# Monitor changes to system files and directories
+-w /etc/passwd -p wa -k identity_changes
+-w /etc/shadow -p wa -k identity_changes
+-w /etc/group -p wa -k identity_changes
+-w /etc/sudoers -p wa -k sudoers_changes
+
+# Monitor system calls by specific users or groups
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k privileged_commands
+-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k privileged_commands
+
+# Monitor system calls by specific programs
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/passwd -k privileged_commands
+-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/passwd -k privileged_commands
+
+# Monitor specific actions
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/wget -k wget
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/curl -k curl
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/base64 -k base64
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/bin/nc -k netcat
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/bin/ncat -k netcat
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/ssh -k ssh
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/scap -k scap
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/sftp -k sftp
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/ftp -k ftp
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/socat -k socat
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/sbin/tcpdump -k tcpdump
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/sbin/wireshark -k wireshark
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/sbin/tshark -k tshark
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/sbin/rawshark -k rawshark
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/rdesktop -k rdesktop
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/nmap -k nmap
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/usr/bin/mknod -k mknod
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/sbin/modprobe -k modprobe
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/sbin/insmod -k insmod
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/sbin/lsmod -k lsmod
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F path=/sbin/rmmod -k rmmod
+
+# End of custom audit rules
+
+# Always include this rule to collect exit status information
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k auditd_exit
+-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k auditd_exit

@@ -1,0 +1,6 @@
+---
+- name: "Reload auditd"
+  ansible.builtin.systemd:
+    name: auditd
+    state: reloaded
+  become: true
