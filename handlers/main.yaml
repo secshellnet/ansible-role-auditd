@@ -1,6 +1,6 @@
 ---
-- name: "Reload auditd"
+- name: "Restart auditd"
   ansible.builtin.systemd:
     name: auditd
-    state: reloaded
+    state: restarted
   become: true

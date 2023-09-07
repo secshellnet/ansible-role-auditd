@@ -12,8 +12,7 @@
     owner: root
     group: root
     mode: "0660"
-  notify:
-    - "Reload auditd"
+  notify: "Restart auditd"
   become: true
 
 - name: "Enable and start auditd service"
